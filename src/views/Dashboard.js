@@ -14,7 +14,7 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPageLimit, setMaxPageLimit] = useState(15);
   const [minPageLimit, setMinPageLimit] = useState(0);
-    
+
   useEffect(() => {
     const url = `${process.env.REACT_APP_PLACEHOLDER_ENDPOINT}/users?offset=${currentPage}`;
     const fetchData = async () => {
@@ -85,9 +85,9 @@ const Dashboard = () => {
                     </svg>
                   </Col>
                   <Col md={10}>
-                    <h3 className="h5">Lorem Ipsum</h3>
+                    <h3 className="h5">Modul Belajar</h3>
                     <p className="m-0 text-muted">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing.
+                      persiapan untuk coding FE codeheral.
                     </p>
                   </Col>
                 </Row>
@@ -114,10 +114,8 @@ const Dashboard = () => {
                     </svg>
                   </Col>
                   <Col md={10}>
-                    <h3 className="h5">Lorem Ipsum</h3>
-                    <p className="m-0 text-muted">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing.
-                    </p>
+                    <h3 className="h5">Satu satu</h3>
+                    <p className="m-0 text-muted">Satu persatu menjadi abu.</p>
                   </Col>
                 </Row>
               </Card.Body>

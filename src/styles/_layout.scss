@@ -96,6 +96,11 @@ table {
   }
 }
 
+.g-3 > *,
+.g-4 > * {
+  min-width: 0;
+}
+
 .search-group {
   position: relative;
   svg {

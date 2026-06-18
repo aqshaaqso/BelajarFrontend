@@ -1,70 +1,92 @@
-const Pagination = (props) => {
-  const { currentPage, maxPageLimit, minPageLimit } = props;
-  const totalPages = Math.round(props.response.total / props.response.limit); 
-  const pages = [];
-  Array.from({ length: totalPages }, (e, i) => pages.push(i)); 
-  const handlePrevClick = () => props.onPrevClick();
-  const handleNextClick = () => props.onNextClick(); 
-  const handlePageClick = (e) => props.onPageChange(Number(e.target.dataset.id));
+import { memo } from "react";
 
-  const pageNumbers = pages.map((page) => {
-    if (page <= maxPageLimit && page >= minPageLimit) {
-      return (
-        <li
-          key={page}
-          id={page}
-          onClick={handlePageClick}
-          className={`page-item ${currentPage === page ? "active" : null}`}
-        >
-          <div className="page-link" data-id={page}>
-            {page + 1}
-          </div>
-        </li>
-      );
-    } else {
-      return null;
-    }
-  });
+const Pagination = memo(
+  ({
+    currentPage,
+    totalPages,
+    windowStart,
+    windowEnd,
+    onPageChange,
+    onPrev,
+    onNext,
+    hasPrev,
+    hasNext,
+  }) => {
+    if (totalPages <= 1) return null;
 
-  let pageIncrementEllipses = null;
-  if (pages.length > maxPageLimit) {
-    pageIncrementEllipses = <li onClick={handleNextClick}>&hellip;</li>;
-  }
-  let pageDecremenEllipses = null;
-  if (minPageLimit >= 1) {
-    pageDecremenEllipses = <li onClick={handlePrevClick}>&hellip;</li>;
-  }
-  return (
-    <>
-      <nav aria-label="Page navigation example">
+    const pages = Array.from({ length: windowEnd - windowStart }, (_, i) => windowStart + i);
+
+    return (
+      <nav aria-label="Pagination">
         <ul className="pagination mb-2">
-          <li className="page-item">
+          <li className={`page-item ${!hasPrev ? "disabled" : ""}`}>
             <button
-              onClick={handlePrevClick}
-              disabled={currentPage === pages[0]}
-              className={`page-link ${currentPage === pages[0] && "disabled"}`}
+              type="button"
+              className="page-link"
+              onClick={onPrev}
+              disabled={!hasPrev}
             >
               Prev
             </button>
           </li>
-          {pageDecremenEllipses}
-          {pageNumbers}
-          {pageIncrementEllipses}
-          <li className="page-item">
+          {windowStart > 0 && (
+            <li className="page-item">
+              <button type="button" className="page-link" onClick={() => onPageChange(0)}>
+                1
+              </button>
+            </li>
+          )}
+          {windowStart > 1 && (
+            <li className="page-item disabled">
+              <span className="page-link">&hellip;</span>
+            </li>
+          )}
+          {pages.map((page) => (
+            <li
+              key={page}
+              className={`page-item ${currentPage === page ? "active" : ""}`}
+            >
+              <button
+                type="button"
+                className="page-link"
+                onClick={() => onPageChange(page)}
+              >
+                {page + 1}
+              </button>
+            </li>
+          ))}
+          {windowEnd < totalPages - 1 && (
+            <li className="page-item disabled">
+              <span className="page-link">&hellip;</span>
+            </li>
+          )}
+          {windowEnd < totalPages && (
+            <li className="page-item">
+              <button
+                type="button"
+                className="page-link"
+                onClick={() => onPageChange(totalPages - 1)}
+              >
+                {totalPages}
+              </button>
+            </li>
+          )}
+          <li className={`page-item ${!hasNext ? "disabled" : ""}`}>
             <button
-              onClick={handleNextClick}
-              disabled={currentPage === pages[pages.length - 1]}
-              className={`page-link ${
-                currentPage === pages[pages.length - 1] && "disabled"
-              }`}
+              type="button"
+              className="page-link"
+              onClick={onNext}
+              disabled={!hasNext}
             >
               Next
             </button>
           </li>
         </ul>
       </nav>
-    </>
-  );
-};
+    );
+  }
+);
+
+Pagination.displayName = "Pagination";
 
 export default Pagination;

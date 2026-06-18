@@ -1,13 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Layout from "./Layout";
-const ProtectedRoute = ({ user, redirectPath = "/", children }) => {
-  if (!user) {
+import { useAuth } from "../context/AuthContext";
+
+const ProtectedRoute = ({ redirectPath = "/" }) => {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
     return <Navigate to={redirectPath} replace />;
   }
 
-  return children ? (
-    children
-  ) : (
+  return (
     <Layout>
       <Outlet />
     </Layout>

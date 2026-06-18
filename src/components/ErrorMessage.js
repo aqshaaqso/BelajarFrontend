@@ -1,26 +1,26 @@
 import { Alert } from "react-bootstrap";
-const ErrorMessage = ({ error }) => {
-  const message = JSON.stringify(error.data.message);
-  return (
-    <>
-      <Alert variant="danger">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-lightbulb-off me-2 d-inline"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fillRule="evenodd"
-            d="M2.23 4.35A6.004 6.004 0 0 0 2 6c0 1.691.7 3.22 1.826 4.31.203.196.359.4.453.619l.762 1.769A.5.5 0 0 0 5.5 13a.5.5 0 0 0 0 1 .5.5 0 0 0 0 1l.224.447a1 1 0 0 0 .894.553h2.764a1 1 0 0 0 .894-.553L10.5 15a.5.5 0 0 0 0-1 .5.5 0 0 0 0-1 .5.5 0 0 0 .288-.091L9.878 12H5.83l-.632-1.467a2.954 2.954 0 0 0-.676-.941 4.984 4.984 0 0 1-1.455-4.405l-.837-.836zm1.588-2.653.708.707a5 5 0 0 1 7.07 7.07l.707.707a6 6 0 0 0-8.484-8.484zm-2.172-.051a.5.5 0 0 1 .708 0l12 12a.5.5 0 0 1-.708.708l-12-12a.5.5 0 0 1 0-.708z"
-          />
-        </svg>
-        Error {message}
-      </Alert>
-    </>
-  );
+
+const getErrorMessage = (error) => {
+  if (!error) return "Something went wrong.";
+  if (typeof error === "string") return error;
+  if (error.message) return error.message;
+  return "Something went wrong.";
 };
+
+const ErrorMessage = ({ error }) => (
+  <Alert variant="danger" className="mb-0">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      className="bi bi-exclamation-triangle me-2 d-inline"
+      viewBox="0 0 16 16"
+    >
+      <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016l6.5 11.25A.125.125 0 0 1 14.5 13.5h-13a.125.125 0 0 1-.065-.234l6.5-11.25zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+    </svg>
+    {getErrorMessage(error)}
+  </Alert>
+);
 
 export default ErrorMessage;
