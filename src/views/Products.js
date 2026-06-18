@@ -20,12 +20,14 @@ import { usePagination } from "../hooks/usePagination";
 import { useSearch } from "../context/SearchContext";
 import { useDebounce } from "../hooks/useDebounce";
 import { filterByQuery } from "../utils/search";
+import { useToast } from "../context/ToastContext";
 
 const emptyForm = { name: "", price: "", stock: "" };
 
 const Products = () => {
   const { query } = useSearch();
   const debouncedQuery = useDebounce(query);
+  const { addToast } = useToast();
   const [products, setProducts] = useState(() => getProducts());
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -77,17 +79,29 @@ const Products = () => {
 
     if (editingId) {
       updateProduct(editingId, payload);
+      addToast({
+        message: `"${payload.name}" updated successfully.`,
+        variant: "success",
+      });
     } else {
       saveProduct(payload);
+      addToast({
+        message: `"${payload.name}" added to inventory.`,
+        variant: "success",
+      });
     }
 
     refresh();
     setShowModal(false);
   };
 
-  const handleDelete = (id) => {
-    deleteProduct(id);
+  const handleDelete = (product) => {
+    deleteProduct(product.id);
     refresh();
+    addToast({
+      message: `"${product.name}" removed from inventory.`,
+      variant: "warning",
+    });
   };
 
   return (
@@ -151,7 +165,7 @@ const Products = () => {
                       <Button
                         size="sm"
                         variant="outline-danger"
-                        onClick={() => handleDelete(product.id)}
+                        onClick={() => handleDelete(product)}
                       >
                         Delete
                       </Button>

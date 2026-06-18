@@ -1,27 +1,23 @@
 import { useState } from "react";
-import { Button, Card, Col, Form, Row, Alert } from "react-bootstrap";
+import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
 import PageHeader from "../components/PageHeader";
 import DarkMode from "../components/DarkMode";
-import { useLocalStorage } from "../hooks/useStorage";
-
-const DEFAULT_SETTINGS = {
-  notifications: true,
-  weeklyReport: true,
-  compactTables: false,
-};
+import { useSettings } from "../context/SettingsContext";
+import { useToast } from "../context/ToastContext";
 
 const Settings = () => {
-  const [settings, setSettings] = useLocalStorage("dashboard-settings", DEFAULT_SETTINGS);
-  const [saved, setSaved] = useState(false);
-
-  const updateSetting = (key, value) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
-    setSaved(false);
-  };
+  const { settings, updateSetting } = useSettings();
+  const { addToast } = useToast();
+  const [savedLocally, setSavedLocally] = useState(false);
 
   const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
+    if (settings.notifications) {
+      addToast({ message: "Settings saved successfully.", variant: "success" });
+      return;
+    }
+
+    setSavedLocally(true);
+    setTimeout(() => setSavedLocally(false), 2500);
   };
 
   return (
@@ -31,7 +27,7 @@ const Settings = () => {
         subtitle="Customize your dashboard experience"
       />
 
-      {saved && (
+      {savedLocally && (
         <Alert variant="success" className="mb-4">
           Settings saved successfully.
         </Alert>
@@ -47,10 +43,13 @@ const Settings = () => {
                   type="switch"
                   id="notifications"
                   className="mb-3"
-                  label="Email notifications"
+                  label="Toast notifications"
                   checked={settings.notifications}
                   onChange={(e) => updateSetting("notifications", e.target.checked)}
                 />
+                <p className="text-muted small ms-5 mb-3">
+                  Show feedback toasts for login, saves, and table actions.
+                </p>
                 <Form.Check
                   type="switch"
                   id="weeklyReport"
@@ -59,6 +58,9 @@ const Settings = () => {
                   checked={settings.weeklyReport}
                   onChange={(e) => updateSetting("weeklyReport", e.target.checked)}
                 />
+                <p className="text-muted small ms-5 mb-3">
+                  Displays a reminder banner on the Reports page when enabled.
+                </p>
                 <Form.Check
                   type="switch"
                   id="compactTables"
@@ -67,6 +69,9 @@ const Settings = () => {
                   checked={settings.compactTables}
                   onChange={(e) => updateSetting("compactTables", e.target.checked)}
                 />
+                <p className="text-muted small ms-5 mb-4">
+                  Reduces row padding across all tables immediately.
+                </p>
                 <Button variant="primary" onClick={handleSave}>
                   Save Preferences
                 </Button>

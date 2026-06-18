@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.scss";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Loader from "./components/Loader";
+import { PageSkeleton } from "./components/Skeleton";
 
 const Login = lazy(() => import("./views/Login"));
 const Dashboard = lazy(() => import("./views/Dashboard"));
@@ -14,8 +14,8 @@ const Settings = lazy(() => import("./views/Settings"));
 const Profile = lazy(() => import("./views/Profile"));
 
 const PageLoader = () => (
-  <div className="p-5">
-    <Loader message="Loading page..." />
+  <div className="p-4 p-md-5">
+    <PageSkeleton />
   </div>
 );
 

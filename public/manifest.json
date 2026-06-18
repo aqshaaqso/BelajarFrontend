@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Admin Dashboard",
+  "name": "React Dashboard Starter Template",
+  "description": "A React Bootstrap admin dashboard starter template with dark mode, reports, and inventory management.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#6246ea",
+  "background_color": "#f7f7f7"
 }

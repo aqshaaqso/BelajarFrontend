@@ -1,12 +1,15 @@
 import { useMemo } from "react";
-import { Card, Col, ProgressBar, Row } from "react-bootstrap";
+import { Alert, Card, Col, ProgressBar, Row } from "react-bootstrap";
 import PageHeader from "../components/PageHeader";
 import DataState from "../components/DataState";
+import { InventoryChart, OrderStatusChart } from "../components/ReportCharts";
 import { API } from "../services/api";
 import { getProductStats } from "../services/productStore";
 import { useFetch } from "../hooks/useFetch";
+import { useSettings } from "../context/SettingsContext";
 
 const Reports = () => {
+  const { settings } = useSettings();
   const { data: users, loading: usersLoading, error: usersError } = useFetch(
     "users",
     API.users
@@ -49,8 +52,15 @@ const Reports = () => {
         subtitle="Business metrics and performance insights"
       />
 
-      <DataState loading={loading} error={error} isEmpty={false}>
-        <Row className="g-4">
+      {settings.weeklyReport && (
+        <Alert variant="info" className="mb-4">
+          Weekly summary reports are enabled. In a production app, this preference
+          would schedule an email digest every Monday.
+        </Alert>
+      )}
+
+      <DataState loading={loading} error={error} isEmpty={false} skeleton="cards">
+        <Row className="g-4 mb-4">
           <Col md={4}>
             <Card className="shadow-sm h-100">
               <Card.Body className="p-4">
@@ -117,6 +127,40 @@ const Reports = () => {
                     ${reportData?.inventoryValue.toFixed(2)}
                   </p>
                 </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        <Row className="g-4">
+          <Col lg={6}>
+            <Card className="shadow-sm h-100">
+              <Card.Body className="p-4">
+                <h3 className="h5 mb-1">Order Status Breakdown</h3>
+                <p className="text-muted mb-4">
+                  Distribution of orders by fulfillment stage
+                </p>
+                <OrderStatusChart
+                  completed={reportData?.completedOrders}
+                  processing={reportData?.processingOrders}
+                  pending={reportData?.pendingOrders}
+                />
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col lg={6}>
+            <Card className="shadow-sm h-100">
+              <Card.Body className="p-4">
+                <h3 className="h5 mb-1">Inventory Levels</h3>
+                <p className="text-muted mb-4">
+                  Product counts by stock availability
+                </p>
+                <InventoryChart
+                  inStock={productStats.inStock}
+                  lowStock={productStats.lowStock}
+                  outOfStock={productStats.outOfStock}
+                />
               </Card.Body>
             </Card>
           </Col>

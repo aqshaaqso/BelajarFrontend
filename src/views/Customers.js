@@ -44,6 +44,7 @@ const Customers = () => {
             error={error}
             isEmpty={!loading && filteredUsers.length === 0}
             emptyMessage="No customers match your search."
+            skeleton="table"
           >
             <div className="table-responsive">
               <Table data={pagination.pageItems} />

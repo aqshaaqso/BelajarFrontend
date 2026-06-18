@@ -63,6 +63,7 @@ const Orders = () => {
             error={error}
             isEmpty={!loading && filteredOrders.length === 0}
             emptyMessage="No orders match your search."
+            skeleton="table"
           >
             <Table responsive className="mb-0">
               <thead>

@@ -81,4 +81,24 @@
             }
         }
     }
+    .toast {
+        .toast-header {
+            background: darken($color: $dark, $amount: 3%);
+            color: #ffffff;
+            border-bottom-color: darken($color: $dark, $amount: 6%);
+        }
+    }
+    .placeholder {
+        background-color: lighten($color: $dark, $amount: 12%);
+    }
+    .recharts-cartesian-axis-tick-value,
+    .recharts-legend-item-text {
+        fill: $offwhite !important;
+        color: $offwhite !important;
+    }
+    .recharts-default-tooltip {
+        background: darken($color: $dark, $amount: 3%) !important;
+        border-color: darken($color: $dark, $amount: 6%) !important;
+        color: #ffffff !important;
+    }
 }

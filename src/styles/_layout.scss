@@ -112,3 +112,32 @@ table {
     padding-left: 40px;
   }
 }
+
+body.compact-tables {
+  table {
+    font-size: 0.875rem;
+
+    th,
+    td {
+      padding: 0.35rem 0.5rem;
+    }
+  }
+}
+
+.toast-stack {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1080;
+  pointer-events: none;
+
+  .toast {
+    pointer-events: auto;
+  }
+}
+
+.placeholder {
+  display: inline-block;
+  min-height: 0.75rem;
+  vertical-align: middle;
+}
